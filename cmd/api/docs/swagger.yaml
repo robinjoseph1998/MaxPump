@@ -1,0 +1,799 @@
+definitions:
+  entity.Address:
+    properties:
+      city:
+        type: string
+      district:
+        type: string
+      house_name:
+        type: string
+      landmark:
+        type: string
+      pincode:
+        type: string
+      state:
+        type: string
+      street:
+        type: string
+      userid:
+        type: integer
+    type: object
+  entity.Admin:
+    properties:
+      active:
+        type: boolean
+      adminname:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      role:
+        type: string
+    required:
+    - adminname
+    - email
+    - password
+    - phone
+    - role
+    type: object
+  entity.User:
+    properties:
+      email:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      phone:
+        type: string
+      wallet:
+        type: integer
+    required:
+    - email
+    - firstname
+    - lastname
+    - phone
+    type: object
+  model.Signup:
+    properties:
+      email:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+    type: object
+  utils.AdminLogin:
+    properties:
+      password:
+        type: string
+      phone:
+        type: string
+    type: object
+  utils.EditAddressRequest:
+    properties:
+      city:
+        type: string
+      district:
+        type: string
+      house_name:
+        type: string
+      landmark:
+        type: string
+      pincode:
+        type: string
+      state:
+        type: string
+      street:
+        type: string
+    type: object
+  utils.LoginPayload:
+    properties:
+      phone:
+        type: string
+    type: object
+  utils.OtpKey:
+    properties:
+      otp:
+        type: string
+      phone:
+        type: string
+      resend:
+        type: string
+    type: object
+  utils.OtpValidation:
+    properties:
+      key:
+        type: string
+      otp:
+        type: string
+    type: object
+  utils.UserLogin:
+    properties:
+      password:
+        type: string
+      phone:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /addaddress:
+    post:
+      consumes:
+      - application/json
+      description: User Address Adding
+      parameters:
+      - description: User address information
+        in: body
+        name: UserAddress
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Address'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Address
+        "400":
+          description: error":"Status Bad Request
+        "500":
+          description: error":"Internal Server Error
+      summary: Add Address
+      tags:
+      - User Address Management
+  /addtocart:
+    post:
+      consumes:
+      - application/json
+      description: Adding Product To User Cart
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: message
+        "500":
+          description: error":"Internal Server Error
+      summary: Adding Product To Cart
+      tags:
+      - User Cart Management
+  /adminlogin:
+    post:
+      consumes:
+      - application/json
+      description: Admin Login Otp
+      parameters:
+      - description: Phone
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/utils.LoginPayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Otp send to
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      summary: Admin Login
+      tags:
+      - Admin Registration and Login
+  /adminloginpassword:
+    post:
+      consumes:
+      - application/json
+      description: Admin Login using password and phone number
+      parameters:
+      - description: Phone and Password
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/utils.AdminLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: message":"Admin Logged in Successfully
+        "400":
+          description: Bad Request
+      summary: Admin Login With Password
+      tags:
+      - Admin Registration and Login
+  /adminlogout:
+    post:
+      consumes:
+      - application/json
+      description: Logout By Admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: message":"logged out successfully
+        "400":
+          description: Bad Request
+      summary: Admin Logout
+      tags:
+      - Admin Registration and Login
+  /adminotpvalidation:
+    post:
+      consumes:
+      - application/json
+      description: Validating Entered Otp By User
+      parameters:
+      - description: Phone,Otp and Resend
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/utils.OtpKey'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: message":"OTP resend successful
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      summary: Login Otp Validation
+      tags:
+      - Admin Registration and Login
+  /allproducts:
+    get:
+      consumes:
+      - application/json
+      description: Listing all products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Products
+        "500":
+          description: Internal Server Error
+      summary: Listing Products
+      tags:
+      - User Category and Product Management
+  /allusers:
+    get:
+      consumes:
+      - application/json
+      description: List All Users in Admin Side
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: users
+        "500":
+          description: Internal Server Error
+      summary: List Users
+      tags:
+      - Admin Side User Management
+  /cancelorder:
+    post:
+      consumes:
+      - application/json
+      description: Cancell The Order By User
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Order":CancelledOrder,"Address
+        "208":
+          description: message":"this item is already cancelled
+        "500":
+          description: error":"Internal Server Error
+      summary: Cancell Order
+      tags:
+      - User Checkout Management
+  /categoriesview:
+    get:
+      consumes:
+      - application/json
+      description: List All Categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Categories
+        "400":
+          description: error":"Internal Server Error
+      summary: View Categories
+      tags:
+      - User Category and Product Management
+  /createcategory:
+    post:
+      consumes:
+      - application/json
+      description: Category Creation by Admin
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Category
+        "500":
+          description: Internal Server Error
+      summary: Create Category
+      tags:
+      - Admin Category Management
+  /createproduct:
+    post:
+      consumes:
+      - application/json
+      description: Admin Product Adding
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: responseData
+        "500":
+          description: Internal Server Error
+      summary: Add Product
+      tags:
+      - Admin Product Management
+  /deletecartproducts:
+    delete:
+      consumes:
+      - application/json
+      description: Removing Product From Cart
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: message":"product removed from your cart
+        "400":
+          description: error":"Status Bad Request
+        "500":
+          description: error":"Internal Server Error
+      summary: Product Delete From Cart
+      tags:
+      - User Cart Management
+  /deletecategory:
+    post:
+      consumes:
+      - application/json
+      description: Admin Delete Category
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: message":"Category deleted successfully
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Delete Category
+      tags:
+      - Admin Category Management
+  /deleteproduct:
+    post:
+      consumes:
+      - application/json
+      description: Admin Product Delete
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: message":"Product Deleted successfully
+        "500":
+          description: Internal Server Error
+      summary: Delete Product
+      tags:
+      - Admin Product Management
+  /editaddress:
+    patch:
+      consumes:
+      - application/json
+      description: Edit The Address By User
+      parameters:
+      - description: Edited Address
+        in: body
+        name: UserAddress
+        required: true
+        schema:
+          $ref: '#/definitions/utils.EditAddressRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Status Accepted
+        "400":
+          description: error":"Status Bad Request
+        "500":
+          description: error":"Internal Server Error
+      summary: Edit User Address
+      tags:
+      - User Address Management
+  /listcart:
+    get:
+      consumes:
+      - application/json
+      description: Listing User's Cart
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: message":"Cart and CartItems
+        "500":
+          description: error":"Internal Server Error
+      summary: List User Cart
+      tags:
+      - User Cart Management
+  /listcategory:
+    get:
+      consumes:
+      - application/json
+      description: Admin Listing Categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Categories
+        "500":
+          description: Internal Server Error
+      summary: List Categories
+      tags:
+      - Admin Category Management
+  /listproducts:
+    get:
+      consumes:
+      - application/json
+      description: Admin List Products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Products
+        "500":
+          description: Internal Server Error
+      summary: List Products
+      tags:
+      - Admin Product Management
+  /loginwithpassord:
+    post:
+      consumes:
+      - application/json
+      description: Validating entered Password by user
+      parameters:
+      - description: Phone and Password
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/utils.UserLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: "message\":\t\"user logged in succesfully and cookie stored"
+        "400":
+          description: "error\":\t\"Bad Request"
+        "404":
+          description: "error\":\t\"Status Not Found"
+      summary: Login With Password
+      tags:
+      - User Authentication
+  /logout:
+    post:
+      consumes:
+      - application/json
+      description: User Logout
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: message":"logged out successfully
+        "400":
+          description: error":"user cookie deletion failed
+      summary: Logout
+      tags:
+      - User Authentication
+  /placeorder:
+    post:
+      consumes:
+      - application/json
+      description: Place Order By User
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: message":"Order Placed","Items":OrderStatus,"Address
+        "400":
+          description: error":"Bad Request
+        "500":
+          description: error":"Internal Server Error
+      summary: Place Order
+      tags:
+      - User Checkout Management
+  /productdetail:
+    get:
+      consumes:
+      - application/json
+      description: Showing Product Detaily
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: product
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Showing Product Details
+      tags:
+      - User Category and Product Management
+  /productsbycategory:
+    get:
+      consumes:
+      - application/json
+      description: List Category With Products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: category and products
+        "500":
+          description: error":"Internal Server Error
+      summary: Category with Products
+      tags:
+      - User Category and Product Management
+  /registeradmin:
+    post:
+      consumes:
+      - application/json
+      description: Registering New Admin
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Newly Registred Admin
+          schema:
+            $ref: '#/definitions/entity.Admin'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: New Admin Register
+      tags:
+      - Admin Registration and Login
+  /searchuser:
+    get:
+      consumes:
+      - application/json
+      description: Search User By id and firstname
+      produces:
+      - application/json
+      responses:
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Search User
+      tags:
+      - Admin Side User Management
+  /showprofile:
+    get:
+      consumes:
+      - application/json
+      description: Show User's Profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Profile":"entity.Profile","Address
+        "500":
+          description: error":"Internal Server Error
+      summary: Show Profile
+      tags:
+      - User Address Management
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user.
+      parameters:
+      - description: User Signup Input
+        in: body
+        name: userInput
+        required: true
+        schema:
+          $ref: '#/definitions/model.Signup'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Newly registered user
+          schema:
+            $ref: '#/definitions/entity.User'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: User Signup
+      tags:
+      - User Authentication
+  /signupotp:
+    post:
+      consumes:
+      - application/json
+      description: Adding new user to the database
+      parameters:
+      - description: User Data
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/model.Signup'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.User'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: signup with otp
+      tags:
+      - User Authentication
+  /signupotpvalidation:
+    post:
+      consumes:
+      - application/json
+      description: Validating entered OTP by user
+      parameters:
+      - description: Key and OTP
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/utils.OtpValidation'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: "message\":\t\"user signup successful"
+        "400":
+          description: "error\":\t\"Bad Request"
+        "401":
+          description: "error\":\t\"Unauthorized"
+      summary: Signup OTP Validation
+      tags:
+      - User Authentication
+  /updateaddress:
+    put:
+      consumes:
+      - application/json
+      description: Updating Address By User
+      parameters:
+      - description: Updated Address
+        in: body
+        name: UserAddress
+        required: true
+        schema:
+          $ref: '#/definitions/utils.EditAddressRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Address
+        "400":
+          description: error":"Status Bad Request
+        "500":
+          description: error":"Internal Server Error
+      summary: Update User Address
+      tags:
+      - User Address Management
+  /updatecategory:
+    patch:
+      consumes:
+      - application/json
+      description: Admin Update Category
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated Category
+        "404":
+          description: error":"category not found
+        "500":
+          description: Internal Server Error
+      summary: Update Category
+      tags:
+      - Admin Category Management
+  /updateproduct:
+    post:
+      consumes:
+      - application/json
+      description: Product Updation by Admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product
+        "400":
+          description: Bad Request
+        "404":
+          description: error":"product not found
+        "500":
+          description: error":"Failed to fetch product from database
+      summary: Update Product
+      tags:
+      - Admin Product Management
+  /userblock:
+    post:
+      consumes:
+      - application/json
+      description: Block User By Admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: message":"User Blocked Successfully
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Block User
+      tags:
+      - Admin Side User Management
+  /userunblock:
+    post:
+      consumes:
+      - application/json
+      description: Unblock user by admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: message":"User Unblocked Successfully
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Unblock User
+      tags:
+      - Admin Side User Management
+  /viewaddresses:
+    get:
+      consumes:
+      - application/json
+      description: View All Saved Addresses By User
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Addresses
+        "500":
+          description: Internal Server Error
+      summary: View Addresses
+      tags:
+      - User Address Management
+  /vieworder:
+    get:
+      consumes:
+      - application/json
+      description: View Order By User
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Items":Order,"Address
+        "500":
+          description: error":"Internal Server Error
+      summary: View Order
+      tags:
+      - User Checkout Management
+swagger: "2.0"
