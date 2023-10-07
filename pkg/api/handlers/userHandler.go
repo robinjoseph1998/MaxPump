@@ -991,3 +991,7 @@ func (uh *UserHandler) CreateInvoice(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "generated successfully"})
 }
+
+func (uh *UserHandler) WelcomeMessage(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"::::": "WELCOME TO MAXPUMP"})
+}
