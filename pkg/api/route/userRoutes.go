@@ -9,7 +9,7 @@ import (
 
 func UserRoutes(r *gin.Engine, userHandler *handlers.UserHandler) *gin.Engine {
 	//User Signup and Login Routes
-	r.POST("/welcome", userHandler.WelcomeMessage)
+	r.GET("/welcome", userHandler.WelcomeMessage)
 	r.POST("/signup", userHandler.Signup)
 	r.POST("/signupotp", userHandler.SignupWithOtp)
 	r.POST("/signupotpvalidation", userHandler.SignupOtpValidation)
