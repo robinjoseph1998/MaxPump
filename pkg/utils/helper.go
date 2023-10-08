@@ -11,7 +11,6 @@ import (
 func GetUserIDFromContext(c *gin.Context) (int, error) {
 	userIdStr := c.GetString("userID")
 	userID, err := strconv.Atoi(userIdStr)
-
 	return userID, err
 }
 
@@ -178,8 +177,6 @@ func GenerateUniqueKey() string {
 }
 
 func ImageLoader(c *gin.Context) {
-
 	htmlFilePath := "assets/index.html"
-
 	c.File(htmlFilePath)
 }
