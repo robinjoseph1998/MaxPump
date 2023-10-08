@@ -8,23 +8,24 @@ MaxPump Is an api of Basic Ecommerce website selling protein powders. The projec
 
 # Admin Side
 
-Admin Registration
-Admin Otp Login and verification
-Admin User Management
-Admin Category Management
-Admin Product Mangemnt
-Admin Coupon Management
-Admin Order Management
+Admin Registration,
+Admin Otp Login and verification,
+Admin User Management,
+Admin Category Management,
+Admin Product Mangemnt,
+Admin Coupon Management,
+Admin Order Management,
 Admin Sales and Dashboard Management 
 
 # User Side
 
-User Signup and Validation (jwt)
-User Category Management
-User Product management
-User Cart Management
-User Profile and Address Management
-User Order and Checkout Management
-User Coupon Management
-User Category and Product Filtering
+User Signup with Otp and Validation,
+Admin Login (jwt),
+User Category Management,
+User Product management,
+User Cart Management,
+User Profile and Address Management,
+User Order and Checkout Management,
+User Coupon Management,
+User Category and Product Filtering,
 User Wallet Management
