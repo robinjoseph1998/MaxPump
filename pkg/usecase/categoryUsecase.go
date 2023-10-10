@@ -66,6 +66,9 @@ func (au *CategoryUsecase) GetCategoryByID(ID uint) (*entity.Category, error) {
 	if err != nil {
 		return nil, err
 	}
+	if category == nil {
+		return nil, errors.New("Invalid category id")
+	}
 	return category, nil
 }
 
