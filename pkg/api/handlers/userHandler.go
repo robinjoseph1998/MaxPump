@@ -80,7 +80,7 @@ func (uh *UserHandler) SignupWithOtp(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	} else {
-		c.JSON(http.StatusOK, gin.H{"Otp send succesfuly to": user.Phone, "Key": key})
+		c.JSON(http.StatusOK, gin.H{"otp send succesfuly to": user.Phone, "Key": key})
 	}
 }
 
