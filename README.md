@@ -20,7 +20,7 @@ Admin Sales and Dashboard Management
 # User Side
 
 User Signup with Otp and Validation,
-Admin Login (jwt),
+User Login (jwt),
 User Category Management,
 User Product management,
 User Cart Management,
