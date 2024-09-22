@@ -8,9 +8,9 @@ package model
 // }
 
 type Signup struct {
-	FirstName string `json:"firstname"`
-	LastName  string `json:"lastname"`
-	Email     string `json:"email"`
-	Phone     string `json:"phone"`
-	Password  string `json:"password"`
+	FirstName string `json:"firstname" validate:"required,min=2,max=100"`
+	LastName  string `json:"lastname" validate:"required,min=2,max=100"`
+	Email     string `json:"email" validate:"required,email"`
+	Phone     string `json:"phone" validate:"required,len=10"`
+	Password  string `json:"password" validate:"required,min=6"`
 }

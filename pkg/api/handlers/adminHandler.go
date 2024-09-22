@@ -17,7 +17,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 type AdminHandler struct {
@@ -189,6 +188,10 @@ func (ar *AdminHandler) ListUsers(c *gin.Context) {
 	offset := (page - 1) * itemsPerPage
 	limit := itemsPerPage
 	TotalUsers, err := ar.AdminUsecase.ExecuteTotalOfUsers()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 	totalPages := (TotalUsers + itemsPerPage - 1) / itemsPerPage
 	paginatedUsers, err := ar.AdminUsecase.ExecuteAllUsersPaginated(offset, limit)
 	if err != nil {
@@ -452,11 +455,6 @@ func (ar *AdminHandler) AddProduct(c *gin.Context) {
 		return
 	}
 	defer imageFile.Close()
-	err = godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
 	cfg, err := config.LoadDefaultConfig(context.TODO()) //Loading the default AWS sdk configuration
 	if err != nil {
 		log.Printf("error: %v", err)
@@ -469,10 +467,6 @@ func (ar *AdminHandler) AddProduct(c *gin.Context) {
 		Key:    aws.String(file.Filename),   //object key sets as file name
 		Body:   imageFile,                   //object content sets as img file
 	})
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -637,6 +631,10 @@ func (ar *AdminHandler) ShowAllCoupons(c *gin.Context) {
 	offset := (page - 1) * itemsPerPage
 	limit := itemsPerPage
 	TotalCoupons, err := ar.AdminUsecase.ExecuteTotalOfCoupons()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "can't show coupons"})
+		return
+	}
 	if TotalCoupons == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"message": "no coupons available"})
 		return
@@ -644,7 +642,7 @@ func (ar *AdminHandler) ShowAllCoupons(c *gin.Context) {
 	totalPages := (TotalCoupons + itemsPerPage - 1) / itemsPerPage
 	PaginatedCoupons, err := ar.AdminUsecase.ExecutePaginatedCoupons(offset, limit)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Can't show coupons"})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "error in execute coupons", "error": err.Error()})
 		return
 	}
 	if PaginatedCoupons == nil {
@@ -708,6 +706,10 @@ func (ar *AdminHandler) ViewAllOrders(c *gin.Context) {
 	offset := (page - 1) * itemsPerPage
 	limit := itemsPerPage
 	TotalOrders, err := ar.OrderUsecase.ExecuteTotalOfAllOrders()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "error in execute total orders", "err": err.Error()})
+		return
+	}
 	if TotalOrders == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"message": "currently no sales"})
 		return
@@ -771,6 +773,10 @@ func (ar *AdminHandler) ShowReturnRequets(c *gin.Context) {
 	offset := (page - 1) * itemsPerPage
 	limit := itemsPerPage
 	TotalRequests, err := ar.OrderUsecase.ExecuteTotalOfReturnRequests()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "error in execute total return requests", "err": err.Error()})
+		return
+	}
 	if TotalRequests == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"message": "currently no Return Requests"})
 		return
@@ -827,6 +833,10 @@ func (ar *AdminHandler) ViewSales(c *gin.Context) {
 	offset := (page - 1) * itemsPerPage
 	limit := itemsPerPage
 	TotalSales, err := ar.OrderUsecase.ExecuteTotalOfSales()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "error in execute total sales", "err": err.Error()})
+		return
+	}
 	if TotalSales == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"message": "currently no sales"})
 		return
@@ -880,6 +890,10 @@ func (ar *AdminHandler) ShowSalesOnParticularDate(c *gin.Context) {
 	offset := (page - 1) * itemsPerPage
 	limit := itemsPerPage
 	TotalSalesByDate, err := ar.OrderUsecase.ExecuteTotalOfSalesByDate(ParsedTime)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "error in execute total sales by date", "err": err.Error()})
+		return
+	}
 	if TotalSalesByDate == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"message": "no sales on this date"})
 		return

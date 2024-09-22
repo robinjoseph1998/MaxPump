@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -10,6 +11,7 @@ import (
 // Helps to fetch User Id from Request Context
 func GetUserIDFromContext(c *gin.Context) (int, error) {
 	userIdStr := c.GetString("userID")
+	fmt.Println("userID", userIdStr)
 	userID, err := strconv.Atoi(userIdStr)
 	return userID, err
 }

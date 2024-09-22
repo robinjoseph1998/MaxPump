@@ -49,6 +49,10 @@ func (uh *UserHandler) Signup(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	if userInput.FirstName == "" || userInput.LastName == "" || userInput.Email == "" || userInput.Phone == "" || userInput.Password == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "required fields are empty"})
+		return
+	}
 	var user entity.User
 	copier.Copy(&user, &userInput)
 	newUser, err := uh.UserUsecase.ExecuteSignup(user)

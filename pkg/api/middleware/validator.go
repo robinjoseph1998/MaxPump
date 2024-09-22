@@ -48,16 +48,6 @@ func GenToken(userID uint, phone string, c *gin.Context) (string, error) {
 	return tokenString, nil
 }
 
-// func ValidateCookie(c *gin.Context) bool {
-// 	cookie, err := c.Cookie("Authorize")
-// 	if err != nil || cookie == "" {
-// 		// Cookie not found or error occurred
-// 		return false
-// 	}
-// 	// Cookie found
-// 	return true
-// }
-
 func ValidateCookie(c *gin.Context) {
 	tokenString, err := c.Cookie("Authorize")
 
@@ -70,6 +60,9 @@ func ValidateCookie(c *gin.Context) {
 	}
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if err != nil {
+			fmt.Println("error in parsing", err)
+		}
 		_, ok := token.Method.(*jwt.SigningMethodHMAC)
 		if !ok {
 			return nil, fmt.Errorf("unexpected signing method:%v", token.Header["alg"])
@@ -87,7 +80,7 @@ func ValidateCookie(c *gin.Context) {
 
 			return
 		}
-
+		fmt.Println("ClAIMS", token.Claims.(jwt.MapClaims))
 		c.Set("userID", fmt.Sprint(claims["userID"]))
 	} else {
 		c.JSON(http.StatusUnauthorized, gin.H{

@@ -3,10 +3,8 @@ package utils
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/twilio/twilio-go"
 	openapi "github.com/twilio/twilio-go/rest/verify/v2"
 )
@@ -19,10 +17,6 @@ var (
 )
 
 func init() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 	TWILIO_ACCOUNT_SID = os.Getenv("KEY1")
 	TWILIO_AUTH_TOKEN = os.Getenv("KEY2")
 	VERIFY_SERVICE_SID = os.Getenv("KEY3")
@@ -41,7 +35,7 @@ func SendOtp(phone string) (string, error) {
 	resp, err := client.VerifyV2.CreateVerification(VERIFY_SERVICE_SID, params)
 	if err != nil {
 		fmt.Println(err.Error())
-		return "", errors.New("Otp failed to generate")
+		return "", errors.New("otp failed to generate")
 	} else {
 		fmt.Printf("Sent verification '%s'\n", *resp.Sid)
 		return *resp.Sid, nil
@@ -50,7 +44,7 @@ func SendOtp(phone string) (string, error) {
 
 func CheckOtp(phone, code string) error {
 	if phone == "" {
-		return errors.New("Phone number is empty")
+		return errors.New("phone number is empty")
 	}
 	to := "+91" + phone
 	params := &openapi.CreateVerificationCheckParams{}
@@ -61,10 +55,10 @@ func CheckOtp(phone, code string) error {
 
 	if err != nil {
 		fmt.Println(err.Error())
-		return errors.New("Invalid otp")
+		return errors.New("invalid otp")
 	} else if *resp.Status == "approved" {
 		return nil
 	} else {
-		return errors.New("Invalid otp")
+		return errors.New("invalid otp")
 	}
 }
