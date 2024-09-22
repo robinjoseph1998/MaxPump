@@ -44,6 +44,8 @@ func TestSignup(t *testing.T) {
 				assert.Equal(t, http.StatusCreated, rec.Code)
 				assert.Contains(t, rec.Body.String(), "test@example.com")
 				assert.Contains(t, rec.Body.String(), "test1")
+			},
+		},
 		"Signup Conflict": {
 			userInput: model.Signup{
 				FirstName: "test1",
